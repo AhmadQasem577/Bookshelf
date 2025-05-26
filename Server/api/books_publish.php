@@ -15,6 +15,8 @@
     }
 
     require_once __DIR__ . '/../controllers/createBook.controller.php';
+    require_once __DIR__ . '/../controllers/editBook.controller.php';
+    require_once __DIR__ . '/../controllers/deleteBook.controller.php';
     
     $input  = json_decode(file_get_contents('php://input'), true);
     $action = $_GET['action'] ?? '';
