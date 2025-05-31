@@ -1,0 +1,48 @@
+# Bookshelf Management System - Apache Configuration
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Increase upload file size limit (if needed)
+# php_value upload_max_filesize 20M
+# php_value post_max_size 21M
+
+# Enable rewriting
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Bookshelf/
+    
+    # Redirect to HTTPS (uncomment in production)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Prevent direct access to includes and components directories
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^components/ - [F,L]
+    
+    # Prevent direct access to .sql files
+    RewriteRule \.(sql)$ - [F,L]
+</IfModule>
+
+# Set security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Uncomment in production
+    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# Custom error pages
+ErrorDocument 404 /Bookshelf/404.php
+ErrorDocument 403 /Bookshelf/403.php
+
+# PHP settings
+php_flag display_errors Off
+php_flag log_errors On
+php_value error_log "a:/ProgrammingTools/SRC/htdocs/Bookshelf/php_errors.log"
